@@ -70,7 +70,6 @@ public class FiltersScreen extends JFrame {
                     .replace("]", "")
                     .replace(", ", "', '") + "')";
         } else {
-
             return sql;
         }
         return sql;
