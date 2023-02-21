@@ -1,4 +1,4 @@
-package model;
+package util;
 
 import util.MySQLConnection;
 
@@ -121,13 +121,12 @@ public class DBReader {
 
                 if (rs.getBoolean("hidden")) {
                     resultMap.put("hidden", "true");
-                }
-                else {
+                } else {
                     resultMap.put("hidden", "false");
                 }
                 resultMap.put("ingredientsDesc", rs.getString("ingredientsDesc"));
                 resultMap.put("stepsDesc", rs.getString("stepsDesc"));
-                resultMap.put("preparationTime",rs.getString("preparationTime"));
+                resultMap.put("preparationTime", rs.getString("preparationTime"));
             }
 
         } catch (SQLException e) {
@@ -143,7 +142,7 @@ public class DBReader {
             ResultSet rs = s.executeQuery(mtSQL);
 
             while (rs.next()) {
-                resultMap.put("mealType",rs.getString("name"));
+                resultMap.put("mealType", rs.getString("name"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -225,4 +224,34 @@ public class DBReader {
             throw new RuntimeException(e);
         }
     }
+
+        public static void showTableContent(JTable component, String sql) {
+            Connection con = MySQLConnection.getConnection();
+
+            try {
+                Statement s = con.createStatement();
+                ResultSet rs = s.executeQuery(sql);
+
+                String[] header = {"title", "preparation time", "meal type"};
+                DefaultTableModel dtm = new DefaultTableModel(header, 0) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        //all cells false
+                        return false;
+                    }
+                };
+
+                component.setModel(dtm);
+
+                String[] resultRow = new String[3];
+                while (rs.next()) {
+                    resultRow[0] = (String) rs.getString("title");
+                    resultRow[1] = (String) rs.getString("preparationTime");
+                    resultRow[2] = (String) rs.getString("mealType");
+                    dtm.addRow(resultRow);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
 }

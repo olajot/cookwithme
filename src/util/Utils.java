@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
 
 public class Utils {
 
@@ -25,6 +26,17 @@ public class Utils {
             if (pjob.printDialog()) {
                 pjob.print();
             }
+        }
+    }
+
+    public static File showFile() {
+
+        final JFileChooser fc = new JFileChooser();
+        int response = fc.showOpenDialog(null);
+        if (response == JFileChooser.APPROVE_OPTION) {
+            return (fc.getSelectedFile());
+        } else {
+            return null;
         }
     }
 

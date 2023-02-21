@@ -1,5 +1,6 @@
-package model;
+package util;
 
+import util.DBReader;
 import util.MySQLConnection;
 
 import javax.swing.*;
@@ -129,13 +130,11 @@ public class DBWriter {
 
             if (s.executeUpdate() > 0) {
                 // Retrieves any auto-generated keys created as a result of executing this Statement object
-                java.sql.ResultSet generatedKeys = s.getGeneratedKeys();
+                ResultSet generatedKeys = s.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     recipePK = generatedKeys.getInt(1);
                 }
             }
-
-
 
         } catch (SQLException e) {
             e.printStackTrace();

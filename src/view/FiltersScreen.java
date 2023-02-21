@@ -1,6 +1,6 @@
 package view;
 
-import model.DBReader;
+import util.DBReader;
 import util.Utils;
 
 import javax.swing.*;

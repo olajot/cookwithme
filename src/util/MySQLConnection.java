@@ -26,3 +26,4 @@ public class MySQLConnection {
         return connection;
     }
 }
+
