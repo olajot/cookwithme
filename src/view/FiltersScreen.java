@@ -33,7 +33,6 @@ public class FiltersScreen extends JFrame {
                 String sql = createSQLWithCriteriaFromUI();
                 RecipeListScreen recipeListScreen = new RecipeListScreen(sql);
                 recipeListScreen.setVisible(true);
-                dispose();
             }
         });
 
@@ -50,13 +49,11 @@ public class FiltersScreen extends JFrame {
         String selectedMealType = getMealTypeFromUI();
         int[] selectedPreparationTime = getPreparationTimeFromUI();
         List<String> selectedLabels = getLabelsFromUI();
-
         String sql = "SELECT  DISTINCT  r.title , r.preparationTime , mt.name AS mealType FROM recipe r" +
                 " JOIN recipeMealType rmt ON rmt.recipeId = r.id " +
                 " JOIN mealType mt ON mt.id  = rmt.mealTypeId " +
                 " JOIN labelledRecipe lr ON lr.recipeId = r.id " +
-                " JOIN label l ON l.id = lr.labelId " +
-                " WHERE r.hidden = 0 ";
+                " JOIN label l ON lr.labelId = l.id" + " WHERE r.hidden = 0 ";
 
         if (selectedPreparationTime[0] != -1 || selectedPreparationTime[1] != 1) {
             sql += " AND r.preparationTime between " + selectedPreparationTime[0] + " AND " + selectedPreparationTime[1];
@@ -66,11 +63,14 @@ public class FiltersScreen extends JFrame {
             sql += " AND mt.name = '" + selectedMealType + "'";
         }
 
-        if (selectedLabels != null) {
+        if (selectedLabels.size() != 0) {
+
             sql += " AND l.name in ('" + Arrays.toString(selectedLabels.toArray())
                     .replace("[", "")
                     .replace("]", "")
                     .replace(", ", "', '") + "')";
+        } else {
+            return sql;
         }
         return sql;
     }

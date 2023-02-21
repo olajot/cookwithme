@@ -72,7 +72,7 @@ public class RecipeListScreen extends JFrame {
             ResultSet rs = s.executeQuery(sql);
 
             String[] header = {"title", "preparation time", "meal type"};
-            DefaultTableModel dtm = new DefaultTableModel(header, 0){
+            DefaultTableModel dtm = new DefaultTableModel(header, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     //all cells false
@@ -82,12 +82,12 @@ public class RecipeListScreen extends JFrame {
 
             recipeTable.setModel(dtm);
 
-            Object[] row = new Object[3];
+            String[] resultRow = new String[3];
             while (rs.next()) {
-                row[0] = rs.getString("title");
-                row[1] = rs.getString("preparationTime");
-                row[2] = rs.getString("mealType");
-                dtm.addRow(row);
+                resultRow[0] = (String) rs.getString("title");
+                resultRow[1] = (String) rs.getString("preparationTime");
+                resultRow[2] = (String) rs.getString("mealType");
+                dtm.addRow(resultRow);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
