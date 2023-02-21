@@ -1,7 +1,7 @@
 package view;
 
-import model.DBReader;
-import model.DBWriter;
+import util.DBReader;
+import util.DBWriter;
 import util.Utils;
 
 import javax.swing.*;

@@ -1,5 +1,6 @@
 package view;
 
+import util.DBReader;
 import util.MySQLConnection;
 import util.Utils;
 
@@ -27,7 +28,7 @@ public class RecipeListScreen extends JFrame {
     public RecipeListScreen(String sql) {
 
         init();
-        showTableContent(sql);
+        DBReader.showTableContent(recipeTable,sql);
         recipeTable.setRowHeight(35);
         recipeTable.changeSelection(0, 0, false, false);
 
@@ -62,35 +63,5 @@ public class RecipeListScreen extends JFrame {
 
         Utils windowUtils = new Utils();
         windowUtils.centerWindow(mainPanel);
-    }
-
-    public void showTableContent(String sql) {
-        Connection con = MySQLConnection.getConnection();
-
-        try {
-            Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery(sql);
-
-            String[] header = {"title", "preparation time", "meal type"};
-            DefaultTableModel dtm = new DefaultTableModel(header, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //all cells false
-                    return false;
-                }
-            };
-
-            recipeTable.setModel(dtm);
-
-            String[] resultRow = new String[3];
-            while (rs.next()) {
-                resultRow[0] = (String) rs.getString("title");
-                resultRow[1] = (String) rs.getString("preparationTime");
-                resultRow[2] = (String) rs.getString("mealType");
-                dtm.addRow(resultRow);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

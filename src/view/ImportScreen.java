@@ -1,6 +1,5 @@
 package view;
 
-import util.FileManager;
 import util.ReadFile;
 import util.Utils;
 
@@ -51,7 +50,7 @@ public class ImportScreen extends JFrame {
         browseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                fileName = Objects.requireNonNull(FileManager.showFile()).getAbsolutePath();
+                fileName = Objects.requireNonNull(Utils.showFile()).getAbsolutePath();
                 fileNameTextArea.setText(fileName);
                 importButton.setEnabled(true);
             }

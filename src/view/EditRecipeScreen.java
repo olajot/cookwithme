@@ -1,7 +1,7 @@
 package view;
 
-import model.DBReader;
-import model.DBWriter;
+import util.DBReader;
+import util.DBWriter;
 import util.Utils;
 
 import javax.swing.*;
@@ -80,10 +80,10 @@ public class EditRecipeScreen extends JFrame {
                 if (checkMandatoryFields()) {
                     if (checkPreparationTime()) {
                         if (checkFieldsLength()) {
-                            String sql = updateRecipeSQLFromFieldsOnUI(recipeId);
+                            String sql = updateRecipeSQLFromUI(recipeId);
                             dbWriter.performUpdate(sql);
 
-                            String mtSQL = updateMealTypeRecipeFromFieldOnUI(recipeId);
+                            String mtSQL = updateMealTypeRecipeFromUI(recipeId);
                             dbWriter.performUpdate(mtSQL);
 
                             JOptionPane.showMessageDialog(mainPanel,
@@ -127,17 +127,17 @@ public class EditRecipeScreen extends JFrame {
         windowUtils.centerWindow(mainPanel);
     }
 
-    private String updateRecipeSQLFromFieldsOnUI(int recipeId) {
+    private String updateRecipeSQLFromUI(int recipeId) {
 
         String updateSQL = "UPDATE recipe " +
                 "SET title = '" + editTitleTextField.getText() + "', ingredientsDesc = '" + editIngredientsDescTextArea.getText() + "', stepsDesc = '"
                 + editStepsDescTextArea.getText() + "', preparationTime = " + editPreparationTimeTextField.getText() + ", hidden = " + hiddenCheckBox.isSelected()
                 + " WHERE id = " + recipeId;
-
+                //WHERE is very important, if missing all entries in recipe table will be updated.
         return updateSQL;
     }
 
-    private String updateMealTypeRecipeFromFieldOnUI(int recipeId) {
+    private String updateMealTypeRecipeFromUI(int recipeId) {
 
         String selectedMealType = (String) editMealTypeComboBox.getSelectedItem();
         int mealTypeId = dbReader.getMealTypeId(selectedMealType);
