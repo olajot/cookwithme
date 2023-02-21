@@ -30,7 +30,6 @@ public class RecipeDetailsScreen extends JFrame {
     private JLabel ingredientsDescLabel;
 
     public RecipeDetailsScreen(String title) {
-
         init();
         int recipeId = getRecipeIdFromDB(title);
         getRecipeDetailsFromDB(recipeId);
