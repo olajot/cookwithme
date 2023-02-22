@@ -1,6 +1,6 @@
-create table if not exists label (
-	id int auto_increment primary key,
-	name varchar(50)
+CREATE TABLE if NOT EXISTS label (
+	ID int auto_increment PRIMARY KEY,
+	NAME varchar(50)
 );
 
 create table if not exists mealType (
@@ -8,29 +8,29 @@ create table if not exists mealType (
 	name varchar(50)
 );
 
-CREATE table if not exists recipe (
-	id int auto_increment,
-	title varchar(255) not null,
-	ingredientsDesc varchar(2000) not null,
+CREATE TABLE if NOT EXISTS recipe (
+	ID int auto_increment,
+	title varchar(255) NOT NULL,
+	ingredientsDesc varchar(2000) NOT NULL,
 	stepsDesc varchar(2000),
-	preparationTime int default 0,
-	createdDate date default(CURRENT_DATE),
+	preparationTime int DEFAULT 0,
+	createdDate date DEFAULT(CURRENT_DATE),
 	hidden boolean,
-	primary key (id)
+	PRIMARY KEY (ID)
 );
 
 
-CREATE table if not exists labelledRecipe (
-	id int auto_increment,
+CREATE TABLE if NOT EXISTS labelledRecipe (
+	ID int auto_increment,
 	recipeId int,
 	labelId int,
-	primary key (id),
-	foreign key (recipeId)
-		references recipe(id)
-		on update restrict on DELETE restrict,
-	foreign key (labelId)
-		references label(id)
-		on update restrict on DELETE restrict
+	PRIMARY KEY (ID),
+	FOREIGN KEY (recipeId)
+		REFERENCES recipe(ID)
+		ON UPDATE RESTRICT ON DELETE RESTRICT,
+	FOREIGN KEY (labelId)
+		REFERENCES label(ID)
+		ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 
 create table if not exists recipeMealType (
