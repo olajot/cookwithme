@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class EditRecipeScreen extends JFrame {
 
@@ -80,18 +81,25 @@ public class EditRecipeScreen extends JFrame {
                 if (checkMandatoryFields()) {
                     if (checkPreparationTime()) {
                         if (checkFieldsLength()) {
-                            String sql = updateRecipeSQLFromUI(recipeId);
-                            dbWriter.performUpdate(sql);
+                            if (checkPreparationTimePositive()) {
+                                String sql = updateRecipeSQLFromUI(recipeId);
+                                dbWriter.performUpdate(sql);
 
-                            String mtSQL = updateMealTypeRecipeFromUI(recipeId);
-                            dbWriter.performUpdate(mtSQL);
+                                String mtSQL = updateMealTypeRecipeFromUI(recipeId);
+                                dbWriter.performUpdate(mtSQL);
 
-                            JOptionPane.showMessageDialog(mainPanel,
-                                    "Recipe has been updated.",
-                                    "Update performed",
-                                    JOptionPane.PLAIN_MESSAGE);
+                                JOptionPane.showMessageDialog(mainPanel,
+                                        "Recipe has been updated.",
+                                        "Update performed",
+                                        JOptionPane.PLAIN_MESSAGE);
 
-                            dispose();
+                                dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(mainPanel,
+                                        "Preparation time should be a positive integer.",
+                                        "Error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            }
                         } else {
                             JOptionPane.showMessageDialog(mainPanel,
                                     "Max length of ingredients and instructions is 2000.",
@@ -114,6 +122,12 @@ public class EditRecipeScreen extends JFrame {
         });
     }
 
+    private boolean checkPreparationTimePositive() {
+        String prepTimeStr = editPreparationTimeTextField.getText().equals("") ? "0" : editPreparationTimeTextField.getText();
+        int prepTime = Integer.parseInt(prepTimeStr);
+        return prepTime >= 0;
+    }
+
 
     private void init() {
         setContentPane(mainPanel);
@@ -131,9 +145,9 @@ public class EditRecipeScreen extends JFrame {
 
         String updateSQL = "UPDATE recipe " +
                 "SET title = '" + editTitleTextField.getText() + "', ingredientsDesc = '" + editIngredientsDescTextArea.getText() + "', stepsDesc = '"
-                + editStepsDescTextArea.getText() + "', preparationTime = " + editPreparationTimeTextField.getText() + ", hidden = " + hiddenCheckBox.isSelected()
+                + editStepsDescTextArea.getText() + "', preparationTime = " + (editPreparationTimeTextField.getText().isEmpty() ? editPreparationTimeTextField.getText() : 0) + ", hidden = " + hiddenCheckBox.isSelected()
                 + " WHERE id = " + recipeId;
-                //WHERE is very important, if missing all entries in recipe table will be updated.
+        //WHERE is very important, if missing all entries in recipe table will be updated.
         return updateSQL;
     }
 
@@ -166,4 +180,5 @@ public class EditRecipeScreen extends JFrame {
     private boolean checkFieldsLength() {
         return editIngredientsDescTextArea.getText().length() <= 2000 && editStepsDescTextArea.getText().length() <= 2000;
     }
+
 }
