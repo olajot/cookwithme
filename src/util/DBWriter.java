@@ -118,8 +118,6 @@ public class DBWriter {
     }
 
     public int addRecipeToDB(String insertSQL) {
-
-        //https://stackoverflow.com/questions/1915166/how-to-get-the-insert-id-in-jdbc
         Connection con = MySQLConnection.getConnection();
 
         int recipePK = -1;
@@ -129,7 +127,7 @@ public class DBWriter {
             PreparedStatement s = con.prepareStatement(insertSQL, columnNames);
 
             if (s.executeUpdate() > 0) {
-                // Retrieves any auto-generated keys created as a result of executing this Statement object
+                // Returns the auto-generated key from executing a Statement
                 ResultSet generatedKeys = s.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     recipePK = generatedKeys.getInt(1);
