@@ -44,15 +44,23 @@ public class AddRecipeScreen extends JFrame {
                 if (checkMandatoryFields()) {
                     if (checkPreparationTime()) {
                         if (checkFieldsLength()) {
-                            String insertSQL = getFieldsFromUI();
+                            if (checkPreparationTimePositive()) {
 
-                            recipeId = dbWriter.addRecipeToDB(insertSQL);
-                            dbWriter.assignMealTypeToRecipe(addMealTypeComboBox, recipeId);
+                                String insertSQL = getFieldsFromUI();
 
-                            disableFieldsAfterRecipeInsert();
-                            addLabelButton.setEnabled(true);
-                            addLabelTextField.setEnabled(true);
-                            saveButton.setEnabled(true);
+                                recipeId = dbWriter.addRecipeToDB(insertSQL);
+                                dbWriter.assignMealTypeToRecipe(addMealTypeComboBox, recipeId);
+
+                                disableFieldsAfterRecipeInsert();
+                                addLabelButton.setEnabled(true);
+                                addLabelTextField.setEnabled(true);
+                                saveButton.setEnabled(true);
+                            } else {
+                                JOptionPane.showMessageDialog(mainPanel,
+                                        "Preparation time should be a positive integer.",
+                                        "Error",
+                                        JOptionPane.PLAIN_MESSAGE);
+                            }
                         } else {
                             JOptionPane.showMessageDialog(mainPanel,
                                     "Max length of ingredients and instructions is 2000.",
@@ -100,6 +108,11 @@ public class AddRecipeScreen extends JFrame {
         });
     }
 
+    private boolean checkPreparationTimePositive() {
+        int prepTime = Integer.parseInt(addPreparationTimeTextField.getText());
+        return prepTime > 0;
+    }
+
     //overloaded constructor
     public AddRecipeScreen(String[] parsedRecipe) {
 
@@ -125,6 +138,7 @@ public class AddRecipeScreen extends JFrame {
         if (!addPreparationTimeTextField.getText().isEmpty()) {
             try {
                 Integer.parseInt(addPreparationTimeTextField.getText());
+
             } catch (NumberFormatException e) {
                 return false;
             }
