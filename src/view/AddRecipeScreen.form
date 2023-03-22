@@ -91,7 +91,7 @@
           <background color="-1042"/>
           <foreground color="-1042"/>
         </properties>
-        <border type="none" title=""/>
+        <border type="empty" title=""/>
         <children>
           <component id="c4e13" class="javax.swing.JLabel">
             <constraints>
@@ -203,7 +203,7 @@
         <properties>
           <background color="-1042"/>
         </properties>
-        <border type="none" title=""/>
+        <border type="empty" title=""/>
         <children>
           <hspacer id="4373e">
             <constraints>

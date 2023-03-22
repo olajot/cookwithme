@@ -7,6 +7,7 @@ import util.Utils;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.print.PrinterException;
 import java.sql.Connection;
 
 public class ManageRecipesScreen extends JFrame {
@@ -19,6 +20,7 @@ public class ManageRecipesScreen extends JFrame {
     private JPanel upPanel;
     private JPanel downPanel;
     private JPanel middlePanel;
+    private JButton printButton;
     DBReader dbReader = new DBReader();
     DBWriter dbWriter = new DBWriter();
 
@@ -81,6 +83,17 @@ public class ManageRecipesScreen extends JFrame {
                 super.focusGained(e);
                 dbReader.showTableContent(recipesTable);
             }
+        });
+        printButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                        try {
+                            Utils.printComponent(mainPanel);
+                        } catch (PrinterException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
         });
     }
 
